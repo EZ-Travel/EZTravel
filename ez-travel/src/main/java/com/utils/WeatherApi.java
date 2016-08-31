@@ -28,15 +28,19 @@ public class WeatherApi {
 		System.out.println(res);
 		JSONObject obj = new JSONObject(res);
 		// System.out.println(res);
-		JSONObject arr = obj.getJSONArray("weather").getJSONObject(0);
-
-		return arr.toString();
+		// if error:not found city
+		if (obj.get("cod").equals("404")) {
+			return "Error - invalid location";
+		} else {
+			JSONObject arr = obj.getJSONArray("weather").getJSONObject(0);
+			return Util.generalizeWeather(arr.get("main").toString());
+		}
 	}
 
 	public static void main(String[] args) {
 
 		WeatherApi api = new WeatherApi();
 
-		System.out.println(api.getWeather(23.3, 22.3));
+		System.out.println(api.getWeather(30, 40));
 	}
 }
