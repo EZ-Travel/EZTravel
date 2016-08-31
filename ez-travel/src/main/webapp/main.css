@@ -539,70 +539,110 @@ select#clientTypes {
 }
 
 width
+
+
 :
+
  
+
 48%;
 padding
+
+
 :
+
  
+
 10%
 5%
 19%
 5%;
 border-radius
+
+
 :
+
  
+
 0
 px
-;
 
-    
+
+;
 float
+
+
 :
+
  
+
 left
-;
 
-    
+
+;
 background-color
+
+
 :
+
  
+
 #1A385C
-;
 
-    
+
+;
 color
+
+
 :
+
  
+
 #fff
-;
 
-    
+
+;
 font-family
-:
- 
-cursive
-;
 
-    
-font-size
+
 :
+
  
+
+cursive
+
+
+;
+font-size
+
+
+:
+
+ 
+
 22
 px
-;
 
-    
+
+;
 position
-:
- 
-relative
-;
 
-    
-width
+
 :
+
  
+
+relative
+
+
+;
+width
+
+
+:
+
+ 
+
 16%;
 }
 h2 {

@@ -257,16 +257,24 @@ keyframes slide { 0% {
 100%
 {
 opacity
+
+
 :
+
  
+
 1;
 -webkit-transform
-:
- 
-translateY
-(0%);
 
-    
+
+:
+
+ 
+
+translateY
+
+
+(0%);
 }
 }
 @
@@ -278,16 +286,24 @@ translateY
 100%
 {
 opacity
+
+
 :
+
  
+
 1;
 -webkit-transform
-:
- 
-translateY
-(0%);
 
-    
+
+:
+
+ 
+
+translateY
+
+
+(0%);
 }
 }
 @media screen and (max-width: 768px) {
