@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html ng-app="ezTravel" lang="en">
+<head>
+<title></title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	rel="stylesheet">
+<link href="css/mystyle.css" rel="stylesheet">
+</head>
+<body ng-controller="ctrl">
+	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed"
+				data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+				aria-controls="navbar">
+				<span class="sr-only">Toggle navigation</span> <span
+					class="icon-bar"></span> <span class="icon-bar"></span> <span
+					class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="#">Events</a>
+		</div>
+
+		<div class="container">
+
+
+			<div id="navbar" class="navbar-collapse collapse">
+				<ul class="nav navbar-nav">
+					<li><a href="#create"> Create</a></li>
+					<li><a href="#update">Update</a></li>
+					<li><a href="#getall">GetAll</a></li>
+					<li><a href="#getbyid"> GetByID</a></li>
+					<li><a href="#delete"> Delete</a></li>
+					<li><a href="#search"> Search</a></li>
+
+
+				</ul>
+			</div>
+		</div>
+
+	</nav>
+
+	<div class="container">
+
+		<div id="create" class="row row-content">
+			<h1>create event</h1>
+
+			<form class="inline-form" ng-submit="createEvent(newEvent)"
+				role="form">
+
+				<input type="number" id="id" ng-model="newEvent.id"
+					class="form-control" placeholder="enter id here" /> <input
+					type="text" id="image" ng-model="newEvent.image"
+					class="form-control" placeholder="enter image here" /> <input
+					type="text" id="weather" ng-model="newEvent.weather"
+					class="form-control" placeholder="enter weather here" /> <input
+					type="number" id="lon" step="any" ng-model="newEvent.lon"
+					class="form-control" placeholder="enter longtitude here"> <input
+					type="number" id="lat" step="any" ng-model="newEvent.lat"
+					class="form-control" placeholder="enter latitude here" /> <input
+					type="number" id="radius" step="any" ng-model="newEvent.radius"
+					class="form-control" placeholder="enter radius here" />
+				<textarea rows="5" class="form-control" ng-model="newEvent.text"
+					placeholder="enter text here"></textarea>
+				<button type="submit">add event</button>
+			</form>
+			<p>{{createEvent}}</p>
+
+		</div>
+
+		<div id="getall" class="row row-content">
+
+			<h1>get all events</h1>
+			<button type="button" ng-click="getAll()">get</button>
+			<div class="container">
+
+				<table class="table table-striped table-hover">
+					<tbody>
+						<tr ng-repeat="event in events">
+							<td>{{event}}</td>
+						</tr>
+					</tbody>
+				</table>
+
+
+
+
+			</div>
+		</div>
+		<div id="getbyid" class="row row-content">
+
+			<h1>get event by id</h1>
+			<form class="inline-form" role="form" ng-submit="getEvent(e_Id)">
+				<input type="number" ng-model="e_Id" /> <input type="submit"
+					value="get event">
+			</form>
+
+			<p>{{event}}</p>
+		</div>
+		<div id="update" class="row row-content">
+
+
+			<h1>update event</h1>
+
+			<form class="inline-form" ng-submit="updateEvent(event)"
+				method="POST" role="form">
+
+				<input type="number" id="id" ng-model="event.id"
+					class="form-control" placeholder="enter id here" /> <input
+					type="text" id="image" ng-model="event.image" class="form-control"
+					placeholder="enter image here" /> <input type="text" id="weather"
+					ng-model="event.weather" class="form-control"
+					placeholder="enter weather here" /> <input type="number" id="lon"
+					step="any" class="form-control" ng-model="event.lon"
+					placeholder="enter longtitude here"> <input type="number"
+					id="lat" step="any" class="form-control" ng-model="event.lat"
+					placeholder="enter latitude here" /> <input type="number"
+					id="radius" step="any" class="form-control" ng-model="event.radius"
+					placeholder="enter radius here" />
+				<textarea rows="5" class="form-control" ng-model="event.text"
+					placeholder="enter text here"></textarea>
+				<input type="submit" value="update event" />
+			</form>
+			<p>{{updatedEvent}}</p>
+		</div>
+		<div id="delete" class="row row-content">
+
+			<h1>delete event</h1>
+
+			<form class="inline-form" role="form"
+				ng-submit="removeEvent(eventId)">
+				<input type="number" ng-model="eventId" /> <input type="submit"
+					value="remove event">
+			</form>
+
+			<p>{{removed}}</p>
+
+
+		</div>
+
+		<div id="search" class="row row-content">
+			<h1>search event</h1>
+			<form role="form" class="inline-form" ng-submit="getWeather(search)">
+				<input type="number" name="lon" step="any" ng-model="search.lon"
+					placeholder="enter longtitude here" class="form-control"> <input
+					type="number" name="lat" step="any" ng-model="search.lat"
+					placeholder="enter latitude here" class="form-control"> <input
+					type="text" name="weather" ng-model="search.weather"
+					placeholder="enter weather here" class="form-control"> <input
+					type="submit" value="search" />
+			</form>
+
+			<table class="table table-striped table-hover">
+				<tbody>
+					<tr ng-repeat="event in searchedEvents">
+						<td>{{event}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+
+
+
+
+</body>
+<script type="text/javascript"
+	src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular.min.js"></script>
+<script type="text/javascript" src="app.js"></script>
+</html>
