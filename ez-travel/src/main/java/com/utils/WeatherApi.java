@@ -41,6 +41,6 @@ public class WeatherApi {
 
 		WeatherApi api = new WeatherApi();
 
-		System.out.println(api.getWeather(30, 40));
+		System.out.println(api.getWeather(30, 30));
 	}
 }
