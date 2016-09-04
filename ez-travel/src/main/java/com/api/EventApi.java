@@ -1,4 +1,4 @@
-package com.utils;
+package com.api;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;

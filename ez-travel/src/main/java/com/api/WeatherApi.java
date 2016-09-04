@@ -1,4 +1,4 @@
-package com.utils;
+package com.api;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -7,6 +7,8 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 
 import org.json.JSONObject;
+
+import com.utils.Util;
 
 public class WeatherApi {
 
