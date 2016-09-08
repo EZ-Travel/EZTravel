@@ -2,7 +2,7 @@ package com.cache;
 
 import java.util.Date;
 
-public class CacheTimestamp {
+public class CacheTimestamp implements Comparable<CacheTimestamp>{
 
 	private String key;
 	private Date timestamp;
@@ -37,6 +37,18 @@ public class CacheTimestamp {
 	@Override
 	public String toString() {
 		return "Timestamp [key=" + key + ", timestamp=" + timestamp + "]";
+	}
+
+	@Override
+	public int compareTo(CacheTimestamp o) {
+		
+		Date TimestampB = o.getTimestamp();
+
+		if (this.timestamp.before(TimestampB))
+			return -1;
+		if (this.timestamp.after(TimestampB))
+			return 1;
+		return 0;
 	}
 
 }
