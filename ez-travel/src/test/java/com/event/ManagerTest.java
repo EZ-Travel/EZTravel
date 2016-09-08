@@ -1,7 +1,6 @@
 package com.event;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import com.pojos.Event;
@@ -12,9 +11,8 @@ public class ManagerTest {
 	public static void main(String[] args) {
 		EventManager manager = EventManager.getManager();
 
-		Event event = new Event(1, "name", "desc", "text", "v_id", new Date(), 20, 20, 500, "IMAGE", "weather");
-
-		System.out.println(manager.persistEvent(event));
+		//Event event = new Event(1, "name", "desc", "text", "v_id", new Date(), 20, 20, 500, "IMAGE", "weather");
+		//System.out.println(manager.persistEvent(event));
 
 		List<Event> events = new ArrayList<>();
 

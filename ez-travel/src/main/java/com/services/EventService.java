@@ -46,7 +46,7 @@ public class EventService {
 	public String deleteEvent(@QueryParam("id") int id) {
 		manager.removeEvent(id);
 
-		return "event with removed successfully";
+		return "event was removed successfully";
 	}
 
 	@PUT
