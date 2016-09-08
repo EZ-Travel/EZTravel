@@ -33,6 +33,7 @@ public class WeatherApi {
 		String weather = (String) cache.getValue(lon + "!" + lat);
 		if (weather != null) {
 			// if available in cache return it
+			// System.out.println("from cache");
 			return weather;
 		}
 		// if not available in cache get it from 3rd party and save in cache
