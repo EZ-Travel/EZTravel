@@ -12,20 +12,22 @@ public class Cache {
 
 	private Cache() {
 		cacheMap = new ConcurrentHashMap<String, Object>();
-		CacheTimestampComperator cacheTimestampComperator = new CacheTimestampComperator();
-		timeMap = new PriorityQueue<CacheTimestamp>(cacheTimestampComperator);
+		timeMap = new PriorityQueue<CacheTimestamp>();
 	}
 
-	public void addValue(String key, Object val, Date expirationDate) {
+	// ADD
+	public synchronized void addValue(String key, Object val, Date expirationDate) {
 		cacheMap.put(key, val);
 		timeMap.add(new CacheTimestamp(key, expirationDate));
 	}
 
+	// GET
 	public Object getValue(String key) {
 		return cacheMap.get(key);
 	}
 
-	public void clearExpiredEvents() {
+	// CLEAR EXPIRED
+	public synchronized void clearExpiredEvents() {
 
 		CacheTimestamp head = timeMap.peek();
 		while (head != null) {
@@ -39,7 +41,7 @@ public class Cache {
 			head = timeMap.peek();
 		}
 	}
-
+	
 	public static Cache getInstance() {
 		return cache;
 

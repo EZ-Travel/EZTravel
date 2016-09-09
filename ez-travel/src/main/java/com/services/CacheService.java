@@ -13,14 +13,14 @@ import com.pojos.Event;
 @Path("cache")
 public class CacheService {
 
-	// ADD
+
 	@Path("addevent")
 	@POST
 	public void addEvent(@QueryParam("key") String key, @QueryParam("val") Event val) {
 		Cache.getInstance().addValue(key, val, val.getExp_date());
 	}
 
-	// GET
+	
 	@Path("getevent")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -29,7 +29,7 @@ public class CacheService {
 		return evnet;
 	}
 
-	// CLEAR EXPIRED
+
 	@Path("clearexpired")
 	@DELETE
 	public void clearExpiredEvents() {

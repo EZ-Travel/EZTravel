@@ -3,18 +3,15 @@ package com.services;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
-
 import com.pojos.Event;
 import com.utils.EventManager;
 import com.utils.Util;
@@ -24,6 +21,7 @@ public class EventService {
 
 	private EventManager manager = EventManager.getManager();
 
+	@Path("all")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Event> getAllEvents() {
@@ -32,6 +30,7 @@ public class EventService {
 
 	}
 
+	@Path("add")
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
@@ -41,6 +40,7 @@ public class EventService {
 
 	}
 
+	@Path("delete")
 	@DELETE
 	@Produces(MediaType.TEXT_PLAIN)
 	public String deleteEvent(@QueryParam("id") int id) {
@@ -49,6 +49,7 @@ public class EventService {
 		return "event was removed successfully";
 	}
 
+	@Path("update")
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
@@ -57,20 +58,19 @@ public class EventService {
 		return manager.updateEvent(event);
 	}
 
+	@Path("byid")
 	@GET
-	@Path("{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Event grtEvent(@PathParam("id") int id) {
+	public Event getEvent(@QueryParam("id") int id) {
 
 		return manager.findEvent(id);
 
 	}
 
+	@Path("byweather")
 	@GET
-	@Path("weather")
-	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Set<Event> searchEvents(@QueryParam("lon") Double lon, @QueryParam("lat") Double lat,
+	public Set<Event> getEventsByWeather(@QueryParam("lon") Double lon, @QueryParam("lat") Double lat,
 			@QueryParam("weather") String weather) {
 		List<Event> raw = manager.searchEvents(weather, lon, lat);
 		Set<Event> events = new HashSet<>();
