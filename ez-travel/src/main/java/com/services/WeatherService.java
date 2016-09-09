@@ -15,7 +15,7 @@ public class WeatherService {
 	private WeatherApi weatherApi = new WeatherApi();
 
 	// GET
-	@Path("getWeather")
+	@Path("getweather")
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
 	public String getWeather(@QueryParam("lon") double lon, @QueryParam("lat") double lat) {
