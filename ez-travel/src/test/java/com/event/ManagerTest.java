@@ -13,7 +13,7 @@ public class ManagerTest {
 
 		//Event event = new Event(1, "name", "desc", "text", "v_id", new Date(), 20, 20, 500, "IMAGE", "weather");
 		//System.out.println(manager.persistEvent(event));
-		//Git test by eran - ignore
+		//
 
 		List<Event> events = new ArrayList<>();
 
