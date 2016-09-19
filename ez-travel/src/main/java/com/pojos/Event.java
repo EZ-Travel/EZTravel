@@ -20,7 +20,6 @@ public class Event implements Serializable {
 	private int id;
 	private String name;
 	private String description;
-	private String text;
 	private String vendor_id;
 	private Date exp_date;
 	private double lon;
@@ -33,13 +32,12 @@ public class Event implements Serializable {
 
 	}
 
-	public Event(int id, String name, String description, String text, String vendor_id, Date exp_date, double lon,
-			double lat, double radius, String image, String weather) {
+	public Event(int id, String name, String description, String vendor_id, Date exp_date, double lon, double lat,
+			double radius, String image, String weather) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.description = description;
-		this.text = text;
 		this.vendor_id = vendor_id;
 		this.exp_date = exp_date;
 		this.lon = lon;
@@ -71,14 +69,6 @@ public class Event implements Serializable {
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public String getText() {
-		return text;
-	}
-
-	public void setText(String text) {
-		this.text = text;
 	}
 
 	public double getLon() {
@@ -139,9 +129,9 @@ public class Event implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Event [id=" + id + ", name=" + name + ", description=" + description + ", text=" + text + ", vendor_id="
-				+ vendor_id + ", exp_date=" + exp_date + ", lon=" + lon + ", lat=" + lat + ", radius=" + radius
-				+ ", image=" + image + ", weather=" + weather + "]";
+		return "Event [id=" + id + ", name=" + name + ", description=" + description + ", vendor_id=" + vendor_id
+				+ ", exp_date=" + exp_date + ", lon=" + lon + ", lat=" + lat + ", radius=" + radius + ", image=" + image
+				+ ", weather=" + weather + "]";
 	}
 
 }

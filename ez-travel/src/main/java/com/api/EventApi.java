@@ -1,5 +1,9 @@
 package com.api;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
+
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Invocation;
@@ -11,6 +15,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.exceptions.EventApiException;
+import com.pojos.Event;
 
 public class EventApi {
 
@@ -20,16 +25,17 @@ public class EventApi {
 	private Client client;
 	private WebTarget target;
 	private Invocation.Builder builder;
+	private Calendar calendar = Calendar.getInstance();
+	// private EventManager eventManager = EventManager.getManager();
 
 	public EventApi() {
 		client = ClientBuilder.newClient();
 		target = client.target(Url);
 	}
 
-	public String getAllEvents() throws EventApiException {
+	public Collection<Event> getAllEvents() throws EventApiException {
 		builder = target.queryParam("app_key", Key).queryParam("date", "future")
-				.queryParam("page_size", numberOfResults).queryParam("page_number", numberOfResults)
-				.request(MediaType.APPLICATION_JSON);
+				.queryParam("page_size", numberOfResults).request(MediaType.APPLICATION_JSON);
 		String res = builder.get().readEntity(String.class);
 		// System.out.println(res);
 		JSONObject obj = new JSONObject(res);
@@ -41,8 +47,81 @@ public class EventApi {
 			JSONObject jsonObject = obj.getJSONObject("events");
 			// get the array of all events
 			JSONArray arrayOfAllEvents = jsonObject.getJSONArray("event");
+			Collection<Event> internalEvents = new ArrayList<>();
 
-			return arrayOfAllEvents.toString();
+			// convert each event to our internal event object
+			for (Object object : arrayOfAllEvents) {
+				JSONObject event = new JSONObject(object.toString());
+				Event internalEvent = new Event();
+
+				// System.out.println(event);
+
+				internalEvent.setDescription("" + event.get("description"));
+
+				// get the end date of the event
+				Object endDate = event.get("stop_time");
+				if (!endDate.equals(null)) {
+					String endDateString = endDate.toString();
+					calendar.set(Calendar.YEAR, Integer.parseInt(endDateString.substring(0, 4)));
+					calendar.set(Calendar.MONTH, Integer.parseInt(endDateString.substring(5, 7)) - 1);
+					calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(endDateString.substring(8, 10)));
+					calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(endDateString.substring(11, 13)));
+					calendar.set(Calendar.MINUTE, Integer.parseInt(endDateString.substring(14, 16)));
+					internalEvent.setExp_date(calendar.getTime());
+				} else {
+					// if cant get the end date of the event, get the start date
+					// of the event
+					String startDate = event.getString("start_time");
+					calendar.set(Calendar.YEAR, Integer.parseInt(startDate.substring(0, 4)));
+					calendar.set(Calendar.MONTH, Integer.parseInt(startDate.substring(5, 7)) - 1);
+					calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(startDate.substring(8, 10)));
+					calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(startDate.substring(11, 13)));
+					calendar.set(Calendar.MINUTE, Integer.parseInt(startDate.substring(14, 16)));
+					internalEvent.setExp_date(calendar.getTime());
+				}
+
+				// get the image object if available
+				Object image = event.get("image");
+				JSONObject imageJson = new JSONObject();
+				if (!image.equals(null)) {
+					imageJson = event.getJSONObject("image");
+					// System.out.println(imageJson);
+					JSONObject imageMedium = imageJson.getJSONObject("medium");
+					// System.out.println(imageMedium);
+					internalEvent.setImage(imageMedium.getString("url"));
+				}
+
+				internalEvent.setLat(event.getDouble("latitude"));
+				internalEvent.setLon(event.getDouble("longitude"));
+				internalEvent.setName("" + event.getString("title"));
+				internalEvent.setRadius(getRelevantRadius(internalEvent));
+				internalEvent.setVendor_id("eventful_" + event.getString("id"));
+				internalEvent.setWeather(getRelevantWeather(internalEvent));
+
+				// see attributes for testing
+				// System.out.println("Title");
+				// System.out.println(internalEvent.getName());
+				// System.out.println("Description");
+				// System.out.println(internalEvent.getDescription());
+				// System.out.println("Vendor Id");
+				// System.out.println(internalEvent.getVendor_id());
+				// System.out.println("Expiration Date");
+				// System.out.println(internalEvent.getExp_date());
+				// System.out.println("lon");
+				// System.out.println(internalEvent.getLon());
+				// System.out.println("lat");
+				// System.out.println(internalEvent.getLat());
+				// System.out.println("image");
+				// System.out.println(internalEvent.getImage());
+				// System.out.println("radius");
+				// System.out.println(internalEvent.getRadius());
+				// System.out.println("weather");
+				// System.out.println(internalEvent.getWeather());
+
+				internalEvents.add(internalEvent);
+
+			}
+			return internalEvents;
 		}
 	}
 
@@ -66,30 +145,24 @@ public class EventApi {
 		}
 	}
 
+	public double getRelevantRadius(Event event) {
+		// to be implemented
+		return 0;
+	}
+
+	public String getRelevantWeather(Event event) {
+		// to be implemented
+		return "";
+	}
+
 	public static void main(String[] args) {
 
 		EventApi api = new EventApi();
-
-		JSONArray arrayOfAllEvents = new JSONArray();
 		try {
-			arrayOfAllEvents = new JSONArray(api.getAllEvents());
+			api.getAllEvents();
 		} catch (JSONException | EventApiException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		for (Object object : arrayOfAllEvents) {
-			JSONObject event = new JSONObject(object.toString());
-			System.out.println("ID");
-			System.out.println("--------------------");
-			System.out.println(event.get("id"));
-			System.out.println("TITLE");
-			System.out.println("--------------------");
-			System.out.println(event.get("title"));
-			System.out.println("START TIME");
-			System.out.println("--------------------");
-			System.out.println(event.get("start_time"));
-			System.out.println("------------------------------------------");
-
 		}
 	}
 }
