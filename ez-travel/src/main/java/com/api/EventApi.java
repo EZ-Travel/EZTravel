@@ -72,6 +72,7 @@ public class EventApi {
 					// if cant get the end date of the event, get the start date
 					// of the event
 					String startDate = event.getString("start_time");
+					System.out.println();
 					calendar.set(Calendar.YEAR, Integer.parseInt(startDate.substring(0, 4)));
 					calendar.set(Calendar.MONTH, Integer.parseInt(startDate.substring(5, 7)) - 1);
 					calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(startDate.substring(8, 10)));
@@ -159,7 +160,7 @@ public class EventApi {
 
 		EventApi api = new EventApi();
 		try {
-			api.getAllEvents();
+			System.out.println(api.getAllEvents());
 		} catch (JSONException | EventApiException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
