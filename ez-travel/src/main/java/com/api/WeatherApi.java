@@ -1,5 +1,8 @@
 package com.api;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 
 import javax.ws.rs.client.Client;
@@ -12,12 +15,17 @@ import org.json.JSONObject;
 
 import com.cache.Cache;
 import com.exceptions.WeatherApiException;
+import com.pojos.Event;
 
 public class WeatherApi {
 
 	private static final String Url = "http://api.openweathermap.org/data/2.5/weather";
 	private static final String Key = "9242d768b6d28de00eafba6e380ed05f";
+	// private static final String PREFIX = "openWeather_";
 	private static final long expirationDateInMillis = 3600000;
+	private static final Collection<String> wordsDescribingSunny = getCollectionOfWordsDescribingSunny();
+	private static final Collection<String> wordsDescribingRainy = getCollectionOfWordsDescribingRainy();
+
 	private Client client;
 	private WebTarget target;
 	private Invocation.Builder builder;
@@ -30,10 +38,10 @@ public class WeatherApi {
 	public String getWeatherAndSave(double lon, double lat) throws WeatherApiException {
 		Cache cache = Cache.getInstance();
 		// search for the weather in cache
-		String weather = (String) cache.getValue(lon + "!" + lat);
+		String key = lon + "!" + lat;
+		String weather = (String) cache.getValue(key);
+
 		if (weather != null) {
-			// if available in cache return it
-			// System.out.println("from cache");
 			return weather;
 		}
 		// if not available in cache get it from 3rd party and save in cache
@@ -48,7 +56,7 @@ public class WeatherApi {
 				throw new WeatherApiException("No weather found for lon=" + lon + " ,lat=" + lat, null);
 			} else {
 				JSONObject arr = obj.getJSONArray("weather").getJSONObject(0);
-				String key = lon + "!" + lat;
+
 				String value = generalizeWeather(arr.get("main").toString());
 				Date expirationDate = new Date();
 				expirationDate.setTime(expirationDate.getTime() + expirationDateInMillis);
@@ -60,7 +68,7 @@ public class WeatherApi {
 		}
 	}
 
-	private static String generalizeWeather(String weather) {
+	private static String generalizeWeather(String weather) throws WeatherApiException {
 
 		switch (weather.toLowerCase()) {
 
@@ -78,12 +86,57 @@ public class WeatherApi {
 			return "rainy";
 
 		default:
-			System.err.println("-------------------------------------------------------------------------");
-			System.err.println("ATTENTION");
-			System.err.println("-------------------------------------------------------------------------");
-			return weather.toLowerCase() + " - is not recognized as an option!";
+			throw new WeatherApiException(weather.toLowerCase() + " - is not recognized as an option!", null);
 		}
 
+	}
+
+	private static Collection<String> getCollectionOfWordsDescribingSunny() {
+		Collection<String> wordsToReturn;
+		String wordsForSunny = "youthful warm verdantunforgettable tropical tan sweltering sweet "
+				+ "sweaty sweating sunny sunburnt sun-sational sun-kissed sun-filled sun-drenched sun-baked "
+				+ "summery sultry stifling sticky steamy starry sizzling shaded sensational seasonal scorching "
+				+ "roasting ripe relaxing refreshing hot red poolside perfect patriotic outdoor oppressive "
+				+ "light lazy leisurely lakeside humid hot heavenly hazy happy growing grilled green fresh "
+				+ "free fragrant endless easy dreamy delightful damp clear cloudless clammy natural muggy "
+				+ "moist ablaze abloom active air-conditioned alive allergic aquaholic backyard balmy barefoot "
+				+ "beautiful blazing blistering boiling breezy bright burning cheerful light out lovely lush magical";
+		wordsToReturn = new ArrayList<String>(Arrays.asList(wordsForSunny.split(" ")));
+		return wordsToReturn;
+	}
+
+	private static Collection<String> getCollectionOfWordsDescribingRainy() {
+		Collection<String> wordsToReturn;
+		String wordsForRainy = "abundant amber autumnal back-to-school blustery bountiful breezy bright brilliant"
+				+ " brisk brown changing chilly cold colder colored colorful comfortable cooling cozy crackling crisp"
+				+ " crunchy deciduous earthy enchanting enjoyable fallen fireside flannel foggy foraging "
+				+ "fresh frosty gold golden gray gusty harvested hibernating howling inspirational leaf-strewn magnificent"
+				+ " moonlit orange overgrown pumpkin-flavored pumpkin-spiced rainy"
+				+ "raked red relaxing ripe roaring rust-colored rustling scary seasonal soggy spectacular spooky turning "
+				+ "unpredictable vibrant visual vivid wilted wilting windy wondrous woodland yellow";
+
+		wordsToReturn = new ArrayList<String>(Arrays.asList(wordsForRainy.split(" ")));
+		return wordsToReturn;
+	}
+
+	public String getRelevantWeather(Event event) {
+
+		String weatherSunny = "sunny";
+		String weatherRainy = "rainy";
+		// to be implemented
+		String description = event.getDescription().toLowerCase();
+		for (String wordForSunny : wordsDescribingSunny) {
+			if (description.contains(wordForSunny)) {
+				return weatherSunny;
+			}
+		}
+		for (String wordForRainy : wordsDescribingRainy) {
+			if (description.contains(wordForRainy)) {
+				return weatherRainy;
+			}
+		}
+
+		return "No Appropriate weather found";
 	}
 
 	public static void main(String[] args) {
@@ -93,9 +146,9 @@ public class WeatherApi {
 		try {
 			System.out.println(api.getWeatherAndSave(30, 30));
 			// going to cache
-			System.out.println(api.getWeatherAndSave(30, 30));
-			System.out.println(api.getWeatherAndSave(30, 30));
-
+			// System.out.println(api.getWeatherAndSave(30, 30));
+			// System.out.println(api.getWeatherAndSave(30, 30));
+			System.out.println(getCollectionOfWordsDescribingSunny());
 		} catch (WeatherApiException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

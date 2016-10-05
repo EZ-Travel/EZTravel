@@ -16,12 +16,14 @@ import org.json.JSONObject;
 
 import com.exceptions.EventApiException;
 import com.pojos.Event;
+import com.utils.EventManager;
 
 public class EventApi {
 
 	private static final String Url = "http://api.eventful.com/json/events/search";
 	private static final String Key = "LwXLT3RFRrkvFVhp";
-	private static final String numberOfResults = "5";
+	private static final String NUMBER_OF_RESULTS = "10";
+	private static final String PREFIX = "eventful_";
 	private Client client;
 	private WebTarget target;
 	private Invocation.Builder builder;
@@ -34,8 +36,10 @@ public class EventApi {
 	}
 
 	public Collection<Event> getAllEvents() throws EventApiException {
+		WeatherApi weatherApi = new WeatherApi();
+
 		builder = target.queryParam("app_key", Key).queryParam("date", "future")
-				.queryParam("page_size", numberOfResults).request(MediaType.APPLICATION_JSON);
+				.queryParam("page_size", NUMBER_OF_RESULTS).request(MediaType.APPLICATION_JSON);
 		String res = builder.get().readEntity(String.class);
 		// System.out.println(res);
 		JSONObject obj = new JSONObject(res);
@@ -83,20 +87,19 @@ public class EventApi {
 				// get the image object if available
 				Object image = event.get("image");
 				JSONObject imageJson = new JSONObject();
-				if (!image.equals(null)) {
-					imageJson = event.getJSONObject("image");
-					// System.out.println(imageJson);
-					JSONObject imageMedium = imageJson.getJSONObject("medium");
-					// System.out.println(imageMedium);
-					internalEvent.setImage(imageMedium.getString("url"));
+
+				// if (image.has("medium") && !image.isNull("medium")) {
+				if (!image.toString().equals("null")) {
+					imageJson = event.getJSONObject("image").getJSONObject("medium");
+					internalEvent.setImage(imageJson.getString("url"));
 				}
 
 				internalEvent.setLat(event.getDouble("latitude"));
 				internalEvent.setLon(event.getDouble("longitude"));
 				internalEvent.setName("" + event.getString("title"));
 				internalEvent.setRadius(getRelevantRadius(internalEvent));
-				internalEvent.setVendor_id("eventful_" + event.getString("id"));
-				internalEvent.setWeather(getRelevantWeather(internalEvent));
+				internalEvent.setVendor_id(PREFIX + event.getString("id"));
+				internalEvent.setWeather(weatherApi.getRelevantWeather(internalEvent));
 
 				// see attributes for testing
 				// System.out.println("Title");
@@ -117,10 +120,13 @@ public class EventApi {
 				// System.out.println(internalEvent.getRadius());
 				// System.out.println("weather");
 				// System.out.println(internalEvent.getWeather());
-
+				System.out.println(internalEvent.getWeather());
 				internalEvents.add(internalEvent);
 
 			}
+			// save the new events in the database
+			saveEventsInDatabase(internalEvents);
+
 			return internalEvents;
 		}
 	}
@@ -150,9 +156,28 @@ public class EventApi {
 		return 0;
 	}
 
-	public String getRelevantWeather(Event event) {
-		// to be implemented
-		return "";
+	public void saveEventsInDatabase(Collection<Event> events) {
+		Collection<Event> allEventsFromDB = EventManager.getManager().findAll();
+		boolean exists = false;
+
+		for (Event event : events) {
+			exists = false;
+			String eventVendor_id = event.getVendor_id();
+
+			// check if the event is already in the db.persist if its not
+			for (Event eventFromDB : allEventsFromDB) {
+
+				if (eventVendor_id.equals(eventFromDB.getVendor_id())) {
+					exists = true;
+					break;
+				}
+			}
+
+			if (!exists) {
+				EventManager.getManager().persistEvent(event);
+			}
+
+		}
 	}
 
 	public static void main(String[] args) {
@@ -160,6 +185,12 @@ public class EventApi {
 		EventApi api = new EventApi();
 		try {
 			api.getAllEvents();
+
+			Collection<Event> allEvents = EventManager.getManager().findAll();
+
+			for (Event event : allEvents) {
+				System.out.println(event);
+			}
 		} catch (JSONException | EventApiException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
