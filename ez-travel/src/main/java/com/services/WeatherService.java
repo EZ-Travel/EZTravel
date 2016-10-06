@@ -25,6 +25,7 @@ public class WeatherService {
 		} catch (WeatherApiException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			weather = "ERROR! weatherService has failed";
 		}
 		return weather;
 	}
