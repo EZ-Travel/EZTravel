@@ -1,341 +1,71 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<title>EzTravel</title>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet"
-	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script
-	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script src="http://maps.googleapis.com/maps/api/js"></script>
+<html ng-app="ezTravel" lang="en">
 
-<!--  -->
-<link href="index.css" rel="stylesheet" />
+<head>
+	<title></title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/mystyle.css" rel="stylesheet">
 </head>
 
-<body id="myPage" data-spy="scroll" data-target=".navbar"
-	data-offset="60">
+<body ng-controller="ctrl as vm">
+	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+		<div class="navbar-header">
 
-	<nav class="navbar navbar-default navbar-fixed-top">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+				aria-controls="navbar">
+				<span class="sr-only">Toggle navigation</span> <span
+					class="icon-bar"></span> <span class="icon-bar"></span> <span
+					class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="#">Events</a>
+
+		</div>
+
 		<div class="container">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle" data-toggle="collapse"
-					data-target="#myNavbar">
-					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
-						class="icon-bar"></span>
-				</button>
-				<!--  <img src="https://s3.postimg.org/u7xuaa9pv/Ez_Travel_Logo.jpg" class="img-thumbnail" alt="logo"></div> -->
-			</div>
-			<div class="collapse navbar-collapse" id="myNavbar">
-				<ul class="nav navbar-nav navbar-right">
-					<li><a href="#about">ABOUT</a></li>
-					<li><a href="#services">SERVICES</a></li>
-					<li><a href="#portfolio">PORTFOLIO</a></li>
-					<li><a href="#pricing">PRICING</a></li>
-					<li><a href="#contact">CONTACT</a></li>
-					<li><a href="event.html">EVENTS</a></li>
 
 
+			<div id="navbar" class="navbar-collapse collapse">
+				<ul class="nav navbar-nav">
+					
 				</ul>
 			</div>
 		</div>
+
 	</nav>
 
+	<div class="container">
+ <div data-ng-repeat="event in vm.events" class="row row-content">
+            <div class="col-xs-12 col-sm-3 col-sm-push-9">
+                <p style="padding:20px;"></p>
+               <img data-ng-src="{{event.image}}" alt="" style="width:300px">
+            </div>
+            <div class="col-xs-12 col-sm-9 col-sm-pull-3">
+                <div class="media">
+                    <div class="media-left media-middle">
+                        <a href="#">
+							<button type="button" ng-click="vm.getAddress(event)"></button>
+							<p ng-bind="event.address" ng-if="event.address"></p>
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <h2 class="media-heading">
+							{{event.name}}
+                            <span ng-bind="event.exp_date | date" ></span> 
+                            <span ng-bind="event.weather" ></span>
+                            </h2>
+                        <p data-ng-bind="event.description"></p>
+                        
+                    </div>
+                </div>
 
-	<div class="jumbotronA text-center">
-		<div class="lineBrackers">
-			<div class="logoCont1"></div>
-			<div class="logoCont2"></div>
-		</div>
+            </div>
+        </div>
 	</div>
-
-
-	<div class="jumbotron text-center">
-		<h1>Ez-Travel</h1>
-		<p>We specialize in helping you organize your trip</p>
-		<form class="form-inline">
-			<input type="email" class="form-control" size="50"
-				placeholder="Email Address" required>
-			<button type="button" class="btn btn-danger">Subscribe</button>
-		</form>
-	</div>
-	<div class="jumbotronB text-center">
-		<div class="lineBrackers">
-			<div class="logoCont1"></div>
-			<div class="logoCont2"></div>
-		</div>
-	</div>
-	<!-- Container (About Section) -->
-	<div id="about" class="container-fluid">
-		<div class="row">
-			<div class="col-sm-8">
-				<h2>About Ez-Travel</h2>
-				<br>
-				<h4>Ez-Travel was created to help you organize your trip with
-					ease.</h4>
-				<p>Using you current location Ez-Travel provides you a variaty
-					of activities personiled to your preferences. Sun or Rain Ez-Travel
-					will always give you something to do</p>
-				<br>
-				<button class="btn btn-default btn-lg">Try it free now!</button>
-			</div>
-			<div class="col-sm-4">
-				<span class="glyphicon glyphicon-signal logo"></span>
-			</div>
-		</div>
-	</div>
-	<div class="jumbotronA text-center">
-		<div class="lineBrackers">
-			<div class="logoCont1"></div>
-			<div class="logoCont2"></div>
-		</div>
-	</div>
-
-	<div class="container-fluid bg-grey">
-		<div class="row">
-			<div class="col-sm-4">
-				<span class="glyphicon glyphicon-globe logo slideanim"></span>
-			</div>
-			<div class="col-sm-8">
-				<h2>Our Values</h2>
-				<br>
-				<h4>
-					<strong>MISSION:</strong> Our mission is to make your trip as
-					hassle free as possible. using Ez-Travel we hope to provide you
-					withsome thing to do no matter where you are or what the weteher
-					is.
-				</h4>
-				<br>
-				<p>
-					<strong>VISION:</strong> Our vision that all of our loyal customers
-					will never go abroad without using Ez-Travel.
-				</p>
-			</div>
-		</div>
-	</div>
-	<div class="jumbotronA2 text-center">
-		<div class="lineBrackers">
-			<div class="logoCont1"></div>
-			<div class="logoCont2"></div>
-		</div>
-	</div>
-
-	<!-- Container (Services Section) -->
-	<div id="services" class="container-fluid text-center">
-		<h2>SERVICES</h2>
-		<div class="row slideanim">
-			<div class="col-sm-4">
-				<span class="glyphicon glyphicon-certificate logo-small"></span>
-				<h4>Weather</h4>
-				<p>We provide you with the most up to date weather forecasts.</p>
-			</div>
-			<div class="col-sm-4">
-				<span class="glyphicon glyphicon-cutlery logo-small"></span>
-				<h4>Restaurants</h4>
-				<p>We have a huge dataBase of restaurants recommendations, from
-					the cheepest option to high dining.</p>
-			</div>
-			<div class="col-sm-4">
-				<span class="glyphicon glyphicon-picture logo-small"></span>
-				<h4>Museums</h4>
-				<p>We have a huge dataBase of Musiams with the newest and most
-					exiting exhibitions , all updated on a daily bases.</p>
-			</div>
-		</div>
-		<br> <br>
-		<div class="row slideanim">
-			<div class="col-sm-4">
-				<span class="glyphicon glyphicon-tree-conifer logo-small"></span>
-				<h4>Out door Activities</h4>
-				<p>We will provide you with a large variaty of activites to do
-					in any weather.</p>
-			</div>
-			<div class="col-sm-4">
-				<span class="glyphicon glyphicon-heart-empty logo-small"></span>
-				<h4>Love</h4>
-				<p>All of our proposals have prveously been checked out by other
-					users.</p>
-			</div>
-			<div class="col-sm-4">
-				<span class="glyphicon glyphicon-calendar logo-small"></span>
-				<h4 style="color: #303030;">Up to date</h4>
-				<p>We promise to give you the most up to date activities and
-					events we can.</p>
-			</div>
-		</div>
-	</div>
-
-
-	<div class="jumbotronA2 text-center">
-		<div class="lineBrackers">
-			<div class="logoCont1"></div>
-			<div class="logoCont2"></div>
-		</div>
-	</div>
-
-	<div id="myCarousel" class="carousel slide text-center bg-grey"
-		data-ride="carousel">
-		<h2>What our customers say</h2>
-		<!-- Indicators -->
-		<ol class="carousel-indicators">
-			<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-			<li data-target="#myCarousel" data-slide-to="1"></li>
-			<li data-target="#myCarousel" data-slide-to="2"></li>
-		</ol>
-
-		<!-- Wrapper for slides -->
-		<div class="carousel-inner" role="listbox">
-			<div class="item active">
-				<h4>
-					"This app is the best. I am so happy with the list of activities it
-					gave me!"<br> <span style="font-style: normal;">John
-						Doe, Vice President, Comment Box</span>
-				</h4>
-			</div>
-			<div class="item">
-				<h4>
-					"One word... WOW!!"<br> <span style="font-style: normal;">John
-						Doe, Salesman, Rep Inc</span>
-				</h4>
-			</div>
-			<div class="item">
-				<h4>
-					"it has the best activities for rainy days!! we werent boared even
-					for a moment!! Thanks Ez-Travel"<br> <span
-						style="font-style: normal;">John Doe, Actor, FriendsAlot</span>
-				</h4>
-			</div>
-		</div>
-
-		<!-- Left and right controls -->
-		<a class="left carousel-control" href="#myCarousel" role="button"
-			data-slide="prev"> <span class="glyphicon glyphicon-chevron-left"
-			aria-hidden="true"></span> <span class="sr-only">Previous</span>
-		</a> <a class="right carousel-control" href="#myCarousel" role="button"
-			data-slide="next"> <span
-			class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-			<span class="sr-only">Next</span>
-		</a>
-	</div>
-	</div>
-
-	<div class="jumbotronA2 text-center">
-		<div class="lineBrackers">
-			<div class="logoCont1"></div>
-			<div class="logoCont2"></div>
-		</div>
-	</div>
-
-	<!-- Container (Contact Section) -->
-	<div id="contact" class="container-fluid ">
-		<h2 class="text-center">CONTACT</h2>
-		<div class="row">
-			<div class="col-sm-5">
-				<p>Contact us and we'll get back to you within 24 hours.</p>
-				<p>
-					<span class="glyphicon glyphicon-map-marker"></span> Israel
-				</p>
-				<p>
-					<span class="glyphicon glyphicon-phone"></span> +972 03-5252255
-				</p>
-				<p>
-					<span class="glyphicon glyphicon-envelope"></span>
-					EzTravel@easyeasy.com
-				</p>
-			</div>
-			<div class="col-sm-7 slideanim">
-				<div class="row">
-					<div class="col-sm-6 form-group">
-						<input class="form-control" id="name" name="name"
-							placeholder="Name" type="text" required>
-					</div>
-					<div class="col-sm-6 form-group">
-						<input class="form-control" id="email" name="email"
-							placeholder="Email" type="email" required>
-					</div>
-				</div>
-				<textarea class="form-control" id="comments" name="comments"
-					placeholder="Comment" rows="5"></textarea>
-				<br>
-				<div class="row">
-					<div class="col-sm-12 form-group">
-						<button class="btn btn-default pull-right" type="submit">Send</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="jumbotronA text-center">
-		<div class="lineBrackers">
-			<div class="logoCont1"></div>
-			<div class="logoCont2"></div>
-		</div>
-	</div>
-
-
-	<footer class="container-fluid text-center">
-		<a href="#myPage" title="To Top"> <span
-			class="glyphicon glyphicon-chevron-up"></span>
-		</a>
-	</footer>
-
-	<script>
-var myCenter = new google.maps.LatLng(32.0853, 34.7818);
-function initialize() {
-var mapProp = {
-  center:myCenter,
-  zoom:12,
-  scrollwheel:false,
-  draggable:false,
-  mapTypeId:google.maps.MapTypeId.ROADMAP
-  };
-
-var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
-var marker = new google.maps.Marker({  position:myCenter,  });
-
-marker.setMap(map);}
-google.maps.event.addDomListener(window, 'load', initialize);
-
-
-$(document).ready(function(){
-  // Add smooth scrolling to all links in navbar + footer link
-  $(".navbar a, footer a[href='#myPage']").on('click', function(event) {
-    // Make sure this.hash has a value before overriding default behavior
-    if (this.hash !== "") {
-      // Prevent default anchor click behavior
-      event.preventDefault();
-
-      // Store hash
-      var hash = this.hash;
-
-      // Using jQuery's animate() method to add smooth page scroll
-      // The optional number (900) specifies the number of milliseconds it takes to scroll to the specified area
-      $('html, body').animate({
-        scrollTop: $(hash).offset().top
-      }, 900, function(){
-   
-        // Add hash (#) to URL when done scrolling (default click behavior)
-        window.location.hash = hash;
-      });
-    } // End if
-  });
-  
-  $(window).scroll(function() {
-    $(".slideanim").each(function(){
-      var pos = $(this).offset().top;
-
-      var winTop = $(window).scrollTop();
-        if (pos < winTop + 600) {
-          $(this).addClass("slide");
-        }
-    });
-  });
-})
-</script>
 
 </body>
-</html>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular.min.js"></script>
+<script type="text/javascript" src="app.js"></script>
 
+</html>

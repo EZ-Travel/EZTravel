@@ -1,5 +1,6 @@
 package com.utils;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -10,7 +11,7 @@ import com.pojos.Event;
 
 public class EventManager {
 
-	private SessionFactory factory;
+	private static SessionFactory factory;
 	private static EventManager instance = new EventManager();
 
 	private EventManager() {
@@ -79,8 +80,30 @@ public class EventManager {
 		return events;
 	}
 
+	public void persistEvents(Collection<Event> events) {
+		List<Event> list = (List<Event>) events;
+
+		Session session = factory.openSession();
+		session.beginTransaction();
+		System.out.println(list.size());
+		for (int i = 0; i < list.size(); i++) {
+
+			session.save(list.get(i));
+			if (i % 100 == 0) {
+				session.flush();
+				session.clear();
+			}
+
+		}
+		session.getTransaction().commit();
+		session.close();
+	}
+
 	public static EventManager getManager() {
 		return instance;
 	}
 
+	public static void closeManager() {
+		factory.close();
+	}
 }

@@ -1,0 +1,61 @@
+[
+    {
+        "description": "The 7th Annual Arizona Taco Festival is set to bring another year of fiesta fun with more than 50 teams from throughout the country competing for $10,000 in cash, while an expected 30,000 attendees nosh their way through more than 100 types of tacos throughout the weekend. \nArizona Taco Festival, Sat. and Sun., Oct. 15 & 16, 11am-7pm, earned its star status as an event that offers $2 tacos in chicken, pork, beef, seafood, veggie, dessert and anything-goes varieties.  Salsa, guacamole and other Mexican fare also are celebrated and devoured at the event each year.",
+        "exp_date": "2016-10-15T19:00:35+03:00",
+        "id": 1,
+        "image": "http://s4.evcdn.com/images/medium/I0-001/033/765/847-8.jpeg_/arizona-taco-festival-47.jpeg",
+        "lat": 33.561,
+        "lon": -111.884,
+        "name": "Arizona Taco Festival",
+        "radius": 0.0,
+        "vendor_id": "eventful_E0-001-096957962-4@2016101511",
+        "weather": ""
+    },
+    {
+        "description": " <br> ",
+        "exp_date": "2016-10-22T19:00:35+03:00",
+        "id": 2,
+        "image": "http://s2.evcdn.com/images/medium/I0-001/015/479/405-6.jpeg_/so-music-festival-05.jpeg",
+        "lat": 32.7833809,
+        "lon": -96.7868288,
+        "name": "So what music festival",
+        "radius": 0.0,
+        "vendor_id": "eventful_E0-001-096957743-1",
+        "weather": ""
+    },
+    {
+        "description": " <br> Stamped, the Pensacola LGBT Film Festival, began in 2012 as a conduit to provide a vibrant and educational experience to the Gulf Coast region, specifically Pensacola, Florida. This festival focuses on lesbian, gay, bisexual, and transgender issues, with a goal of expanding the regions diversity and acceptance of diverse identities. Their mission is driven primarily by an annual film festival featuring short and feature-length documentaries and fiction films with LGBT themes and / or directors and actors.The festival highlights the artistic contributions both nationally and internationally of lesbian, gay, bisexual, and transgender (LGBT) films and filmmakers. The unique ability of film to transcend stereotypes and relate to the viewer opens the door to a dialogue about the LGBT experience, building a stronger and more open Pensacola. The non-profit organization keeps its festival free to the public and runs entirely off donations from local businesses and organizations, the LGBT community, and allies.",
+        "exp_date": "2016-10-13T18:00:35+03:00",
+        "id": 3,
+        "lat": 30.4128163,
+        "lon": -87.2154793,
+        "name": "LGBT Film Festival",
+        "radius": 0.0,
+        "vendor_id": "eventful_E0-001-096957608-9",
+        "weather": ""
+    },
+    {
+        "description": " <br> ",
+        "exp_date": "2016-10-23T19:00:35+03:00",
+        "id": 4,
+        "image": "http://s2.evcdn.com/images/medium/I0-001/015/479/405-6.jpeg_/so-music-festival-05.jpeg",
+        "lat": 32.7833809,
+        "lon": -96.7868288,
+        "name": "So what music festival",
+        "radius": 0.0,
+        "vendor_id": "eventful_E0-001-096957745-9",
+        "weather": ""
+    },
+    {
+        "description": " <br> ",
+        "exp_date": "2016-10-21T18:00:35+03:00",
+        "id": 5,
+        "image": "http://s2.evcdn.com/images/medium/I0-001/015/479/405-6.jpeg_/so-music-festival-05.jpeg",
+        "lat": 32.7833809,
+        "lon": -96.7868288,
+        "name": "So what music festival",
+        "radius": 0.0,
+        "vendor_id": "eventful_E0-001-096957721-9",
+        "weather": ""
+    }
+]

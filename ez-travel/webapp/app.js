@@ -5,97 +5,59 @@
 
     angular.module('ezTravel', [])
         .constant('BaseUrl', 'webapi/event')
-        .service('location', function(){
+        .service('location', function ($http, $q) {
             var service = this;
-            var output = document.getElementById('locationImg');
-            
+
+
             function success(pos) {
-              service.position = pos;
+                service.position = pos;
                 var lat = pos.coords.latitude;
                 var lon = pos.coords.longitude;
 
-                console.log('the position is: ' + lat + ' ' + lon);
-
-                var src = 'https://maps.googleapis.com/maps/api/staticmap?center='+lat+','+lon+'&zoom=15&size=300x300&sensor=false&key=AIzaSyBTWzQ9sHMfnbPjRlWcV7Y9GZrompEGV58';
-                output.setAttribute('src', src);
+                // var src = 'https://maps.googleapis.com/maps/api/staticmap?center=' + lat + ',' + lon + '&zoom=15&size=300x300&sensor=false&key=AIzaSyBTWzQ9sHMfnbPjRlWcV7Y9GZrompEGV58';
             }
 
 
             navigator.geolocation.getCurrentPosition(success);
 
+            service.getLocation = function () {
+                var defferd = $q.defer();
 
+                navigator.geolocation.getCurrentPosition(defferd.resolve);
+
+                return defferd.promise;
+            }
+
+            service.getAddress = function (lat, lon) {
+                return $http.get('https://maps.googleapis.com/maps/api/geocode/json?latlng=' + lat + ',' + lon + '&key=AIzaSyBTWzQ9sHMfnbPjRlWcV7Y9GZrompEGV58')
+                    .then(function (result) {
+                        return result.data;
+                    });
+            }
 
         })
-        .controller('ctrl', function ($scope, $http, BaseUrl, location) {
+        .controller('ctrl', function ($http, BaseUrl, location) {
+            var vm = this;
+            // $http.get('data.json')
 
-console.log(location.position);
-            $scope.getAll = function () {
-                $http.get(BaseUrl).then(
-                    function (response) {
-                        console.log(response);
-                        $scope.events = response.data;
-                    },
-                    function (err) {
-                        console.log(err);
-                    });
+            $http.get(BaseUrl + '/all')
+                .then(
+                function (response) {
+                    vm.events = response.data;
+                },
+                function (err) {
+                    console.log(err);
+                });
+
+            vm.getAddress = function (event) {
+                location.getAddress(event.lat, event.lon).then(function (data) {
+                    event.address = data.results[0].formatted_address;
+                })
             }
 
-            $scope.createEvent = function (event) {
-                $http.post(BaseUrl, event).then(
-                    function (result) {
-                        console.log(result);
-                        $scope.createdEvent = result.data;
-                    },
-                    function (err) {
-                        console.log(err);
-                    });
-            }
-
-            $scope.updateEvent = function (event) {
-
-                $http.put(BaseUrl, event).then(
-                    function (result) {
-                        console.log(result);
-                        $scope.updatedEvent = result.data;
-                    },
-                    function (err) {
-                        console.log(err);
-                    }
-                )
-            }
-
-            $scope.removeEvent = function (id) {
-                $http.delete(BaseUrl, { params: { 'id': id } }).then(
-                    function (result) {
-                        console.log(result);
-                        $scope.removed = result.data;
-                    },
-                    function (err) {
-                        console.log(err);
-                    });
-            }
-
-            $scope.getEvent = function (id) {
-                $http.get(BaseUrl + '/' + id).then(
-                    function (result) {
-                        $scope.event = result.data;
-
-                    },
-                    function (err) {
-                        console.log(err);
-                    });
-            }
-
-            $scope.getWeather = function (search) {
-                $http.get(BaseUrl + '/weather', { params: search }).then(
-                    function (result) {
-                        console.log(result);
-                        $scope.searchedEvents = result.data;
-                    },
-                    function (err) {
-                        console.log(err);
-                    });
-            }
+            location.getLocation().then(function (data) {
+                console.log(data)
+            })
         });
 
 })();
