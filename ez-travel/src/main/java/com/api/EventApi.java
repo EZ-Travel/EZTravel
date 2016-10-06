@@ -1,5 +1,6 @@
 package com.api;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -16,6 +17,7 @@ import org.json.JSONObject;
 
 import com.exceptions.EventApiException;
 import com.pojos.Event;
+import com.utils.EventManager;
 
 public class EventApi {
 
@@ -27,6 +29,7 @@ public class EventApi {
 	private WebTarget target;
 	private Invocation.Builder builder;
 	private Calendar calendar = Calendar.getInstance();
+	private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	// private EventManager eventManager = EventManager.getManager();
 
 	public EventApi() {
@@ -184,9 +187,9 @@ public class EventApi {
 
 		EventApi api = new EventApi();
 		try {
-<<<<<<< HEAD
+
 			System.out.println(api.getAllEvents());
-=======
+
 			api.getAllEvents();
 
 			Collection<Event> allEvents = EventManager.getManager().findAll();
@@ -194,7 +197,7 @@ public class EventApi {
 			for (Event event : allEvents) {
 				System.out.println(event);
 			}
->>>>>>> branch 'master' of https://github.com/EZ-Travel/EZTravel.git
+
 		} catch (JSONException | EventApiException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

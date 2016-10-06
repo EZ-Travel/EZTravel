@@ -3,6 +3,10 @@ package com.utils;
 import com.api.EventApi;
 import com.exceptions.EventApiException;
 
+/**
+ * starts a thread that adds new events every hour
+ *
+ */
 public class Scheduler extends Thread {
 
 	private EventManager manager = EventManager.getManager();
